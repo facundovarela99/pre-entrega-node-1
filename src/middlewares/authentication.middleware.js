@@ -8,7 +8,12 @@ const secret_key = process.env.JWT_SECRET_KEY
 
 export const authentication = (req, res, next) => {
     console.log('Header: ', req.headers)
-    const token = req.headers['authorization'].split(" ")[1];
+    if (!req.headers['authorization']) return res.sendStatus(401).json({
+        message:'No autorizado. Debe iniciar sesión.'
+    });
+    const authorizationHerader = req.headers['authorization'].split(" ")[1] 
+
+    const token = authorizationHerader;
 
     if (!token) return res.sendStatus(401);
 
