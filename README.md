@@ -323,10 +323,10 @@ Las rutas se mantienen igual que en local:
 
 ```txt
 POST /auth/login
-GET /products
-POST /products/create
-PATCH /products/update/:id
-DELETE /products/delete/:id
+GET /api/products
+POST /api/products/create
+PATCH /api/products/update/:id
+DELETE /api/products/delete/:id
 ```
 
 ## Notas para probar en Postman o Thunder Client

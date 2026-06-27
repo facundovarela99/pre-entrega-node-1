@@ -2,7 +2,11 @@ import { deleteProductService, getAllProductsService, getByCategoryService, getP
 
 export async function getAllProducts(req, res) {
     try {
-        const products = await getAllProductsService();
+        if (req.query.categoria) {
+            var products = await getByCategoryService(req.query.categoria);   
+        } else{
+            var products = await getAllProductsService();
+        }
         res.status(200).json({data: products})
     } catch (e) {   
         res.status(e.statusCode ?? 500).json({
@@ -27,26 +31,9 @@ export async function getByID(req, res) {
     }
 }
 
-export async function getByCategoryController(req, res) {
-    const category = req.params.category;
-    console.log('category: ', category);
-
-    try {
-        const products = await getByCategoryService(category);
-        res.status(200).json({ data: products });
-    } catch (e) {
-        res.status(e.statusCode ?? 500).json({
-            error: e.error ?? 'Internal Server Error',
-            message: e.message ?? 'Error inesperado',
-            statusCode: e.statusCode ?? 500,
-        });
-    }
-}
-
 export async function saveProductController(req, res) {
     
     const body = req.body;
-    console.log('body: ', body);
     try {
         const product = await saveProductService(body);
         res.status(201).json({message:'Producto creado exitosamente', product})
@@ -70,7 +57,6 @@ export async function updateProductController(req, res) {
             product
         });
     } catch (e) {
-        console.log(e);
         res.status(e.statusCode ?? 500).json({
             error: e.error ?? 'Internal Server Error',
             message: e.message ?? 'Error inesperado',
@@ -80,7 +66,6 @@ export async function updateProductController(req, res) {
 }
 
 export async function deleteProductController(req, res) {
-    console.log('deleteProductController: Solicitud recibida');
     const id = req.params.id;
     try {
         await deleteProductService(id);

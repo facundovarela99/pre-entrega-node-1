@@ -18,7 +18,6 @@ export async function saveProductService(product) {
     try {
         const normalizedProduct = normalizeProduct(product);
         await validateProduct(normalizedProduct);
-        console.log('Producto normalizado a punto de ser enviado al modelo: ', normalizedProduct);
         return await saveProductModel(normalizedProduct);
     } catch (error) {
         throw error;

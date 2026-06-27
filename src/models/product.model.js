@@ -40,7 +40,6 @@ export async function getByField(field) {
 }
 
 export async function saveProductModel(product) {
-    console.log('Producto llegando al modelo: ', product);
    return await addDoc(productsCollection, product);
 };
 
@@ -78,13 +77,17 @@ export async function getByCategoryModel(category) {
     try {
         const q = query(productsCollection, where("categoria", "==", category));
         const querySnapshot = await getDocs(q);
-        console.log('querySnapshot: ', querySnapshot);
         querySnapshot.forEach((doc) => {
             products.push({id: doc.id, ...doc.data()});
         });
-        console.log('products by category ', category, ': ', products);
+        if (products.length === 0) {
+            throw new AppError('Bad request', 'Categoría inexistente', 400);
+        } 
         return products
     } catch (error) {
+        if (error.error === 'Bad request') {
+            throw error;
+        }
         throw new AppError(error, 'Error al obtener los productos por categoría', 500);
     }
 }

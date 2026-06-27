@@ -2,7 +2,6 @@ import { getByCategoryModel } from "../models/product.model.js";
 import { AppError } from "./error.model.js";
 
 export async function validateProduct(product, currentProductId = null){
-    console.log('Producto recibido en el helper: ', product);
     try {
         await validateExistingProduct(product, currentProductId);
         validateName(product.nombre);
@@ -20,7 +19,7 @@ function validateName(nombre){
         throw Error("El nombre no puede venir vacío")
     }
 
-    if (typeof nombre === Number) {
+    if (Number(nombre)) {
         throw Error("El nombre debe ser una cadena de caracteres")
     }
 
@@ -35,7 +34,7 @@ function validateCategory(categoria){
         throw Error("La categoria no puede venir vacío")
     }
 
-    if (typeof categoria === Number) {
+    if (Number(categoria)) {
         throw Error("La categoria debe ser una cadena de caracteres")
     }
 
@@ -50,7 +49,7 @@ function validateColor(color){
         throw Error("El color no puede venir vacío")
     }
 
-    if (typeof color === Number) {
+    if (Number(color)) {
         throw Error("El color debe ser una cadena de caracteres")
     }
 
@@ -64,11 +63,11 @@ function validatePrice(precio){
         throw Error("El precio no puede venir vacío")
     }
 
-    if (typeof precio === String) {
+    if (!Number(precio)) {
         throw Error("El precio debe ser un número")
     }
 
-    if (precio < 0) {
+    if (Number(precio) < 0) {
         throw Error("El precio no puede ser un número negativo")
     }
 }
@@ -78,11 +77,11 @@ function validateStock(stock){
         throw Error("El stock no puede venir vacío")
     }
 
-    if (typeof stock === String) {
+    if (!Number(stock)) {
         throw Error("El stock debe ser un número")
     }
 
-    if (stock < 0){
+    if (Number(stock) < 0){
         throw Error("El stock no puede ser un número negativo")
     }
 }
@@ -105,7 +104,6 @@ function capitalizeFirstLetter(str) {
 }
 
 async function validateExistingProduct(product, currentProductId = null){
-    console.log('validateExistingProduct: producto: ', product)
     const {nombre, color, categoria} = product
     const productsWithCategory = await getByCategoryModel(product.categoria);
 
@@ -117,7 +115,6 @@ async function validateExistingProduct(product, currentProductId = null){
 }
 
 export function normalizeProduct(product){
-    console.log('product actualizando...: ', product);
     return {
         nombre: product.nombre.trim(),
         categoria: product.categoria.trim(),
