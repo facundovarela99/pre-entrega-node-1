@@ -14,9 +14,9 @@ export function login(req, res){
         //Búsqueda mockeada del usuario
         validateExistingUser(email, password);
     
-        const token = generateToken(email, password);
+        const token = generateToken(defaultUser);
         res.json({token})
-    } catch (error) {
+    } catch (e) {
         res.status(e.statusCode ?? 500).json({
             error: e.error ?? 'Internal Server Error',
             message: e.message ?? 'Error inesperado',

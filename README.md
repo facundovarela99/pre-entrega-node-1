@@ -290,18 +290,44 @@ src/
 ├── routes/
 │   ├── products.routes.js
 │   └── user.routes.js
-└── express.js
+└── index.js
 ```
 
 ## Flujo general
 
-1. El servidor se levanta desde `src/express.js`.
+1. El servidor se levanta localmente desde `src/index.js`.
 2. `/auth/login` permite obtener un JWT usando el usuario de prueba.
 3. `/products` está protegido por el middleware `authentication`.
 4. El middleware valida el token enviado en `Authorization`.
 5. Los controllers reciben la request y delegan la lógica en los services.
 6. Los services validan y normalizan datos con los helpers.
 7. Los models interactúan con Firestore, usando la colección `products`.
+
+## Deploy en Vercel
+
+El proyecto usa `api/index.js` como entrypoint para Vercel. Ese archivo importa la app de Express desde `src/index.js`, y `vercel.json` reescribe las requests hacia esa función.
+
+Antes de desplegar, cargar en Vercel las mismas variables de entorno definidas en `.env`, especialmente:
+
+```txt
+apiKey
+authDomain
+projectId
+storageBucket
+messagingSenderId
+appId
+JWT_SECRET_KEY
+```
+
+Las rutas se mantienen igual que en local:
+
+```txt
+POST /auth/login
+GET /products
+POST /products/create
+PATCH /products/update/:id
+DELETE /products/delete/:id
+```
 
 ## Notas para probar en Postman o Thunder Client
 

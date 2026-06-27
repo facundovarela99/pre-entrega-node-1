@@ -1,4 +1,4 @@
-import { getByField, getByIDModel, getByCategoryModel } from "../models/product.model.js";
+import { getByCategoryModel } from "../models/product.model.js";
 import { AppError } from "./error.model.js";
 
 export async function validateProduct(product, currentProductId = null){
@@ -107,7 +107,7 @@ function capitalizeFirstLetter(str) {
 async function validateExistingProduct(product, currentProductId = null){
     console.log('validateExistingProduct: producto: ', product)
     const {nombre, color, categoria} = product
-    const productsWithCategory = await getProductsWithCategoryModel(product.categoria);
+    const productsWithCategory = await getByCategoryModel(product.categoria);
 
     productsWithCategory.forEach((prod)=>{
         if (nombre === prod.nombre && color === prod.color && categoria === prod.categoria){
